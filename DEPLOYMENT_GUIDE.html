@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BUPEK Finance — Deployment Guide</title>
+<style>
+  :root { --navy:#1E3A5F; --blue:#1D4ED8; --green:#065F46; --green-bg:#D1FAE5; --amber:#92400E; --amber-bg:#FEF3C7; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; font-size: 14px; color: #111827; background: #F9FAFB; }
+  @media print { body { background: white; } .no-print { display: none; } @page { size: A4; margin: 20mm; } }
+  .header { background: linear-gradient(135deg, var(--navy), var(--blue)); color: white; padding: 40px; text-align: center; }
+  .header h1 { font-size: 2em; font-weight: 900; margin-bottom: 6px; }
+  .header p { opacity: .8; }
+  .toc { background: white; border: 1px solid #E5E7EB; border-radius: 10px; padding: 20px 28px; margin: 28px auto; max-width: 900px; }
+  .toc h3 { color: var(--navy); margin-bottom: 12px; font-size: 1em; }
+  .toc ol { padding-left: 20px; line-height: 2; }
+  .toc a { color: var(--blue); text-decoration: none; }
+  .section { max-width: 900px; margin: 0 auto; padding: 0 24px 32px; }
+  h2 { color: var(--navy); font-size: 1.3em; border-left: 5px solid var(--blue); padding: 6px 14px; margin: 36px 0 16px; background: #EFF6FF; border-radius: 0 6px 6px 0; }
+  h3 { color: #1E40AF; font-size: 1em; margin: 20px 0 10px; font-weight: 700; }
+  p { color: #374151; line-height: 1.7; margin-bottom: 12px; }
+  pre { background: #1E293B; color: #E2E8F0; padding: 16px 20px; border-radius: 8px; font-size: 13px; overflow-x: auto; margin: 12px 0; line-height: 1.6; white-space: pre-wrap; }
+  code { background: #EFF6FF; color: var(--blue); padding: 2px 6px; border-radius: 4px; font-size: .9em; }
+  .note { border-left: 4px solid #F59E0B; background: var(--amber-bg); padding: 12px 16px; border-radius: 0 6px 6px 0; margin: 14px 0; font-size: .9em; color: var(--amber); }
+  .success { border-left: 4px solid #10B981; background: var(--green-bg); padding: 12px 16px; border-radius: 0 6px 6px 0; margin: 14px 0; font-size: .9em; color: var(--green); }
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: .9em; }
+  th { background: var(--navy); color: white; padding: 9px 12px; text-align: left; }
+  td { padding: 8px 12px; border-bottom: 1px solid #E5E7EB; }
+  tr:nth-child(even) td { background: #F9FAFB; }
+  .step { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 20px; }
+  .step-num { background: var(--blue); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: .9em; flex-shrink: 0; margin-top: 2px; }
+  .print-btn { position: fixed; bottom: 24px; right: 24px; background: var(--navy); color: white; border: none; border-radius: 50px; padding: 12px 24px; cursor: pointer; font-weight: 700; box-shadow: 0 4px 20px rgba(0,0,0,.3); }
+  footer { background: var(--navy); color: rgba(255,255,255,.6); text-align: center; padding: 18px; margin-top: 40px; font-size: .82em; }
+</style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">🖨 Print Guide</button>
+
+<div class="header">
+  <h1>BUPEK FINANCE LIMITED</h1>
+  <p>Microfinance Management System — VPS Deployment Guide</p>
+  <p style="margin-top:6px;font-size:.85em;opacity:.6;">Ubuntu 22.04 · Node.js 20 · PostgreSQL · Nginx · PM2 · June 2026</p>
+</div>
+
+<div class="section">
+
+<div class="toc">
+  <h3>📋 Contents</h3>
+  <ol>
+    <li><a href="#req">Server Requirements</a></li>
+    <li><a href="#nodejs">Install Node.js 20</a></li>
+    <li><a href="#postgres">Install &amp; Configure PostgreSQL</a></li>
+    <li><a href="#pm2">Install PM2</a></li>
+    <li><a href="#nginx">Install &amp; Configure Nginx</a></li>
+    <li><a href="#code">Upload Application Code</a></li>
+    <li><a href="#env">Configure Environment Variables</a></li>
+    <li><a href="#migrate">Run Database Migrations</a></li>
+    <li><a href="#build">Build &amp; Start the Application</a></li>
+    <li><a href="#ssl">SSL Certificate (HTTPS)</a></li>
+    <li><a href="#backup">Set Up Automatic Backups</a></li>
+    <li><a href="#monitor">Monitoring &amp; Maintenance</a></li>
+    <li><a href="#security">Production Security Checklist</a></li>
+  </ol>
+</div>
+
+<h2 id="req">1. Server Requirements</h2>
+<table>
+  <thead><tr><th>Item</th><th>Minimum</th><th>Recommended</th></tr></thead>
+  <tbody>
+    <tr><td>OS</td><td>Ubuntu 20.04</td><td>Ubuntu 22.04 LTS</td></tr>
+    <tr><td>RAM</td><td>2 GB</td><td>4 GB</td></tr>
+    <tr><td>CPU</td><td>1 vCPU</td><td>2 vCPU</td></tr>
+    <tr><td>Storage</td><td>20 GB SSD</td><td>40 GB SSD</td></tr>
+    <tr><td>Network</td><td>1 Gbps</td><td>1 Gbps</td></tr>
+  </tbody>
+</table>
+<p>Suitable hosting providers: DigitalOcean ($12/month), Hetzner ($5/month), Linode, or any Tanzanian VPS provider.</p>
+
+<h2 id="nodejs">2. Install Node.js 20</h2>
+<pre>curl -fsSL https://deb.nodesource.com/setup_20.x | sudo bash -
+sudo apt-get install -y nodejs
+node --version   # should print v20.x.x
+npm --version</pre>
+
+<h2 id="postgres">3. Install &amp; Configure PostgreSQL</h2>
+<pre>sudo apt-get install -y postgresql postgresql-contrib
+sudo systemctl enable postgresql
+sudo systemctl start postgresql</pre>
+
+<h3>Create the BUPEK database</h3>
+<pre>sudo -u postgres psql
+
+-- Inside psql:
+CREATE USER bupek WITH PASSWORD 'CHOOSE_STRONG_PASSWORD_HERE';
+CREATE DATABASE bupek_finance OWNER bupek;
+GRANT ALL PRIVILEGES ON DATABASE bupek_finance TO bupek;
+\q</pre>
+
+<div class="note">⚠ Replace <code>CHOOSE_STRONG_PASSWORD_HERE</code> with a real strong password. Save it — you'll need it for the .env file.</div>
+
+<h2 id="pm2">4. Install PM2 (Process Manager)</h2>
+<pre>sudo npm install -g pm2
+pm2 --version</pre>
+<p>PM2 keeps the backend running after you log out of the server, and auto-restarts it if it crashes.</p>
+
+<h2 id="nginx">5. Install &amp; Configure Nginx</h2>
+<pre>sudo apt-get install -y nginx
+sudo systemctl enable nginx
+sudo systemctl start nginx</pre>
+
+<h3>Create Nginx site configuration</h3>
+<pre>sudo nano /etc/nginx/sites-available/bupek</pre>
+
+<p>Paste this into the file:</p>
+<pre>server {
+    listen 80;
+    server_name yourdomain.co.tz;   # ← replace with your domain
+
+    # Frontend (Next.js)
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+
+    # Backend API
+    location /api/ {
+        proxy_pass http://localhost:5000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        client_max_body_size 10M;
+    }
+
+    # File uploads
+    location /uploads/ {
+        alias /opt/bupek-finance/backend/uploads/;
+        expires 30d;
+    }
+}</pre>
+
+<pre># Enable the site
+sudo ln -s /etc/nginx/sites-available/bupek /etc/nginx/sites-enabled/
+sudo nginx -t          # test config — should say "test is successful"
+sudo systemctl reload nginx</pre>
+
+<h2 id="code">6. Upload Application Code</h2>
+<pre># On your local computer — upload the code to the server
+scp -r /path/to/bupek-finance root@YOUR_SERVER_IP:/opt/bupek-finance
+
+# OR use git if hosted on GitHub/GitLab
+ssh root@YOUR_SERVER_IP
+git clone https://github.com/YOUR_ORG/bupek-finance.git /opt/bupek-finance</pre>
+
+<h2 id="env">7. Configure Environment Variables</h2>
+<pre>cd /opt/bupek-finance/backend
+cp .env.example .env
+nano .env</pre>
+
+<p>Update these values in the .env file:</p>
+<table>
+  <thead><tr><th>Variable</th><th>Value to Set</th></tr></thead>
+  <tbody>
+    <tr><td>NODE_ENV</td><td>production</td></tr>
+    <tr><td>DATABASE_URL</td><td>postgresql://bupek:YOUR_DB_PASSWORD@localhost:5432/bupek_finance</td></tr>
+    <tr><td>JWT_SECRET</td><td>Run: <code>node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"</code></td></tr>
+    <tr><td>JWT_REFRESH_SECRET</td><td>Same command — different value</td></tr>
+    <tr><td>CORS_ORIGIN</td><td>https://yourdomain.co.tz</td></tr>
+    <tr><td>AT_USERNAME</td><td>Your Africa's Talking username</td></tr>
+    <tr><td>AT_API_KEY</td><td>Your Africa's Talking production API key</td></tr>
+    <tr><td>SMTP_HOST</td><td>smtp.gmail.com</td></tr>
+    <tr><td>SMTP_USER</td><td>noreply@bupekfinance.co.tz</td></tr>
+    <tr><td>SMTP_PASS</td><td>Your Gmail app password</td></tr>
+  </tbody>
+</table>
+
+<p>Also create the frontend .env.local:</p>
+<pre>cd /opt/bupek-finance/frontend
+echo "NEXT_PUBLIC_API_URL=https://yourdomain.co.tz/api/v1" > .env.local
+echo "FRONTEND_URL=https://yourdomain.co.tz" >> .env.local</pre>
+
+<h2 id="migrate">8. Run Database Migrations</h2>
+<pre>cd /opt/bupek-finance/backend
+npm ci
+npx prisma generate
+npx prisma migrate deploy
+npx ts-node prisma/seed.ts     # loads initial data + CEO account</pre>
+
+<div class="success">✔ After seeding, the CEO login will work: ceo@bupekfinance.co.tz / Admin@1234<br>Change this password immediately after first login.</div>
+
+<h2 id="build">9. Build &amp; Start the Application</h2>
+<pre># Build backend
+cd /opt/bupek-finance/backend
+npm run build
+
+# Build frontend
+cd /opt/bupek-finance/frontend
+npm ci
+npm run build</pre>
+
+<h3>Start with PM2</h3>
+<pre># Start backend
+pm2 start /opt/bupek-finance/backend/dist/server.js \
+  --name "bupek-api" \
+  --cwd /opt/bupek-finance/backend
+
+# Start frontend
+pm2 start npm --name "bupek-frontend" \
+  --cwd /opt/bupek-finance/frontend \
+  -- start
+
+# Save PM2 config (auto-restart on reboot)
+pm2 save
+pm2 startup   # follow the command it prints</pre>
+
+<h3>Verify services are running</h3>
+<pre>pm2 status
+curl http://localhost:5000/api/v1/health    # should return {"status":"ok"}
+curl http://localhost:3000                  # should return HTML</pre>
+
+<h2 id="ssl">10. SSL Certificate (HTTPS)</h2>
+<pre>sudo apt-get install -y certbot python3-certbot-nginx
+sudo certbot --nginx -d yourdomain.co.tz
+
+# Auto-renewal is set up automatically. Test with:
+sudo certbot renew --dry-run</pre>
+
+<div class="success">✔ After this step, your system will be accessible at https://yourdomain.co.tz with a valid SSL certificate (free, renews automatically every 90 days).</div>
+
+<h2 id="backup">11. Set Up Automatic Backups</h2>
+<pre># Install cron job for daily 2am backups
+bash /opt/bupek-finance/scripts/setup_backup_cron.sh
+
+# Test backup manually
+bash /opt/bupek-finance/scripts/backup.sh
+
+# Check backup files
+ls -lh /var/backups/bupek/</pre>
+
+<div class="note">⚠ Also copy backups to an external location (cloud storage, another server, USB drive) weekly. Local-only backups are lost if the server fails.</div>
+
+<h2 id="monitor">12. Monitoring &amp; Maintenance</h2>
+
+<h3>Common commands</h3>
+<pre># View running processes
+pm2 status
+
+# View backend logs
+pm2 logs bupek-api
+
+# View frontend logs
+pm2 logs bupek-frontend
+
+# Restart after code update
+pm2 restart bupek-api
+pm2 restart bupek-frontend
+
+# View nginx access log
+sudo tail -100 /var/log/nginx/access.log
+
+# Check disk space
+df -h
+
+# View backup log
+cat /var/backups/bupek/backup.log</pre>
+
+<h3>After updating the code</h3>
+<pre>cd /opt/bupek-finance
+git pull                           # if using git
+cd backend && npm run build && pm2 restart bupek-api
+cd ../frontend && npm run build && pm2 restart bupek-frontend</pre>
+
+<h2 id="security">13. Production Security Checklist</h2>
+<table>
+  <thead><tr><th>Item</th><th>Done?</th></tr></thead>
+  <tbody>
+    <tr><td>Change CEO default password (Admin@1234)</td><td>☐</td></tr>
+    <tr><td>Change PostgreSQL password from default (8844)</td><td>☐</td></tr>
+    <tr><td>Set NODE_ENV=production in .env</td><td>☐</td></tr>
+    <tr><td>Generate unique JWT_SECRET (64-char random)</td><td>☐</td></tr>
+    <tr><td>Generate unique JWT_REFRESH_SECRET (different 64-char)</td><td>☐</td></tr>
+    <tr><td>Install SSL certificate (Let's Encrypt)</td><td>☐</td></tr>
+    <tr><td>Configure UFW firewall (allow only 22, 80, 443)</td><td>☐</td></tr>
+    <tr><td>Set up daily backup cron job</td><td>☐</td></tr>
+    <tr><td>Configure Africa's Talking SMS API key</td><td>☐</td></tr>
+    <tr><td>Configure SMTP email for password resets</td><td>☐</td></tr>
+    <tr><td>Set CORS_ORIGIN to your domain</td><td>☐</td></tr>
+    <tr><td>Test backup and restore procedure</td><td>☐</td></tr>
+    <tr><td>Test SMS delivery with real API key</td><td>☐</td></tr>
+    <tr><td>Run API smoke tests: bash scripts/test_api.sh</td><td>☐</td></tr>
+  </tbody>
+</table>
+
+<h3>Firewall setup (UFW)</h3>
+<pre>sudo ufw allow OpenSSH
+sudo ufw allow 'Nginx Full'
+sudo ufw enable
+sudo ufw status</pre>
+
+</div>
+
+<footer>BUPEK Finance Limited · Deployment Guide · June 2026 · Confidential</footer>
+</body>
+</html>

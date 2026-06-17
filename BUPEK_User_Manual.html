@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BUPEK Finance — System User Manual</title>
+<style>
+  :root { --navy:#1E3A5F; --blue:#1D4ED8; --green:#065F46; --green-bg:#D1FAE5; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; font-size: 14px; color: #111827; background: #F9FAFB; }
+  @media print {
+    body { background: white; font-size: 11px; }
+    .no-print { display: none; }
+    .page-break { page-break-before: always; }
+    @page { size: A4; margin: 18mm 15mm; }
+  }
+  .cover { background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%); color: white; text-align: center; padding: 70px 40px; }
+  .cover h1 { font-size: 2.4em; font-weight: 900; letter-spacing: 1px; margin-bottom: 8px; }
+  .cover h2 { font-size: 1.4em; font-weight: 400; opacity: .85; margin-bottom: 6px; }
+  .cover p  { opacity: .6; font-size: .9em; margin-top: 20px; }
+  .role-badge { display: inline-block; padding: 4px 14px; border-radius: 20px; font-weight: 700; font-size: .82em; letter-spacing: .5px; }
+  .r-ceo  { background:#E0E7FF; color:#3730A3; }
+  .r-om   { background:#EDE9FE; color:#4C1D95; }
+  .r-bm   { background:#D1FAE5; color:#065F46; }
+  .r-lo   { background:#DBEAFE; color:#1E40AF; }
+  .r-co   { background:#FEF3C7; color:#92400E; }
+  .r-ac   { background:#F3F4F6; color:#374151; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 32px 28px; }
+  h2 { color: var(--navy); font-size: 1.35em; border-left: 5px solid var(--blue); padding: 7px 14px; margin: 40px 0 18px; background: #EFF6FF; border-radius: 0 6px 6px 0; }
+  h3 { color: #1E40AF; font-size: 1.05em; margin: 22px 0 10px; font-weight: 800; border-bottom: 1px solid #DBEAFE; padding-bottom: 5px; }
+  h4 { color: var(--navy); font-size: .95em; margin: 14px 0 7px; font-weight: 700; }
+  p  { color: #374151; line-height: 1.7; margin-bottom: 10px; }
+  ol, ul { padding-left: 22px; margin-bottom: 12px; }
+  li { margin-bottom: 6px; color: #374151; line-height: 1.6; }
+  .path { background: #1E293B; color: #BAE6FD; padding: 7px 14px; border-radius: 6px; font-family: 'Courier New', monospace; font-size: .88em; display: inline-block; margin: 5px 0; }
+  .note { border-left: 4px solid #F59E0B; background: #FEF3C7; padding: 11px 16px; border-radius: 0 6px 6px 0; margin: 12px 0; font-size: .9em; color: #92400E; }
+  .tip  { border-left: 4px solid #10B981; background: var(--green-bg); padding: 11px 16px; border-radius: 0 6px 6px 0; margin: 12px 0; font-size: .9em; color: var(--green); }
+  .step-grid { display: grid; grid-template-columns: auto 1fr; gap: 8px 14px; align-items: start; margin: 14px 0; }
+  .step-num { background: var(--blue); color: white; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: .82em; flex-shrink: 0; }
+  .step-text { padding-top: 3px; color: #374151; line-height: 1.55; }
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: .9em; }
+  th { background: var(--navy); color: white; padding: 9px 12px; text-align: left; font-size: .85em; }
+  td { padding: 8px 12px; border-bottom: 1px solid #E5E7EB; vertical-align: top; }
+  tr:nth-child(even) td { background: #F9FAFB; }
+  .toc { background: white; border: 1px solid #E5E7EB; border-radius: 10px; padding: 22px 28px; margin: 24px 0; }
+  .toc h3 { margin-top: 0; border-bottom: 1px solid #E5E7EB; padding-bottom: 8px; color: var(--navy); }
+  .toc ol { column-count: 2; column-gap: 40px; }
+  .toc a { color: var(--blue); text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+  .screen-box { border: 1px solid #DBEAFE; border-radius: 8px; padding: 14px 18px; margin: 12px 0; background: white; }
+  .screen-box p { margin: 0; font-size: .88em; color: #374151; }
+  .screen-box strong { color: var(--blue); display: block; margin-bottom: 4px; font-size: .95em; }
+  .workflow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+  .wf-step { background: #DBEAFE; color: #1E40AF; padding: 5px 12px; border-radius: 6px; font-weight: 700; font-size: .82em; }
+  .wf-arrow { color: #94A3B8; font-size: 1.1em; }
+  .print-btn { position: fixed; bottom: 24px; right: 24px; background: var(--navy); color: white; border: none; border-radius: 50px; padding: 12px 24px; cursor: pointer; font-weight: 700; box-shadow: 0 4px 20px rgba(0,0,0,.3); z-index: 99; }
+  footer { background: var(--navy); color: rgba(255,255,255,.6); text-align: center; padding: 18px; margin-top: 40px; font-size: .82em; }
+</style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">🖨 Print Manual</button>
+
+<!-- COVER -->
+<div class="cover">
+  <h1>BUPEK FINANCE LIMITED</h1>
+  <h2>Microfinance Management System</h2>
+  <h2 style="font-weight:700;margin-top:4px;">USER MANUAL</h2>
+  <p>Version 1.0 · June 2026 · Confidential</p>
+  <p style="margin-top:8px;">For staff training and daily operations reference</p>
+</div>
+
+<div class="wrap">
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc">
+  <h3>📋 Table of Contents</h3>
+  <ol>
+    <li><a href="#intro">Introduction &amp; Overview</a></li>
+    <li><a href="#login">Logging In &amp; Account Security</a></li>
+    <li><a href="#roles">User Roles &amp; Permissions</a></li>
+    <li><a href="#dashboard">Dashboard Guide</a></li>
+    <li><a href="#clients">Client Management</a></li>
+    <li><a href="#loans">Loan Management</a></li>
+    <li><a href="#repayments">Recording Repayments</a></li>
+    <li><a href="#collections">Collections &amp; Overdue Loans</a></li>
+    <li><a href="#reports">Reports Guide</a></li>
+    <li><a href="#sms">SMS Notifications</a></li>
+    <li><a href="#users">User &amp; Branch Management</a></li>
+    <li><a href="#audit">Audit Trail</a></li>
+    <li><a href="#settings">Settings &amp; Password</a></li>
+    <li><a href="#faq">Common Questions &amp; Troubleshooting</a></li>
+  </ol>
+</div>
+
+<!-- ─── SECTION 1 ──────────────────────────────────────── -->
+<h2 id="intro">1. Introduction &amp; Overview</h2>
+<p>The BUPEK Finance Microfinance Management System is a web-based platform designed specifically for BUPEK Finance Limited. It manages the complete lifecycle of microfinance operations: client registration, loan applications, approvals, disbursements, repayments, overdue collections, and financial reporting.</p>
+<p>The system runs in your web browser. You do not need to install any software — just open the web address your administrator provides and log in.</p>
+<table>
+  <thead><tr><th>Component</th><th>Details</th></tr></thead>
+  <tbody>
+    <tr><td>System Name</td><td>BUPEK Finance Microfinance Management System v1.0</td></tr>
+    <tr><td>Developed For</td><td>BUPEK Finance Limited</td></tr>
+    <tr><td>Web Browser</td><td>Chrome, Firefox, Edge (latest versions)</td></tr>
+    <tr><td>Support Contact</td><td>Your system administrator</td></tr>
+  </tbody>
+</table>
+
+<!-- ─── SECTION 2 ──────────────────────────────────────── -->
+<h2 id="login">2. Logging In &amp; Account Security</h2>
+
+<h3>How to Log In</h3>
+<div class="step-grid">
+  <div class="step-num">1</div><div class="step-text">Open your web browser and go to the system URL (e.g. <strong>http://localhost:3000</strong> or your domain).</div>
+  <div class="step-num">2</div><div class="step-text">Enter your <strong>Email Address</strong> and <strong>Password</strong>.</div>
+  <div class="step-num">3</div><div class="step-text">Click <strong>Sign In</strong>. You will be taken to the Dashboard.</div>
+</div>
+
+<div class="note">⚠ Never share your password with anyone, including your manager or the system administrator. The administrator can reset your password without knowing your current one.</div>
+
+<h3>Account Lockout</h3>
+<p>If you enter the wrong password <strong>5 times</strong>, your account will be locked for <strong>30 minutes</strong>. After 30 minutes, try again. If you need it unlocked sooner, contact your administrator.</p>
+
+<h3>Forgot Your Password?</h3>
+<div class="step-grid">
+  <div class="step-num">1</div><div class="step-text">Click <strong>"Forgot Password?"</strong> on the login page.</div>
+  <div class="step-num">2</div><div class="step-text">Enter your registered email address and click <strong>Send Reset Link</strong>.</div>
+  <div class="step-num">3</div><div class="step-text">Check your email inbox for a link from BUPEK Finance. The link is valid for <strong>1 hour</strong>.</div>
+  <div class="step-num">4</div><div class="step-text">Click the link in the email, enter your new password, and click <strong>Reset Password</strong>.</div>
+</div>
+
+<h3>Changing Your Password</h3>
+<p>Click your name in the top-right corner → <strong>Settings</strong> → <strong>Password</strong> tab. Enter your current password, then your new password twice. Password must be at least 8 characters with an uppercase letter, a number, and a special character.</p>
+
+<!-- ─── SECTION 3 ──────────────────────────────────────── -->
+<h2 id="roles">3. User Roles &amp; Permissions</h2>
+<p>Every user account has a role that controls what they can see and do. Your role is shown next to your name at the top of the screen.</p>
+<table>
+  <thead><tr><th>Role</th><th>What They Can Do</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><span class="role-badge r-ceo">CEO / Admin</span></td>
+      <td>Full access to everything: manage users, approve and disburse loans, all reports, audit trail, system settings, SMS templates. Can write off loans and reverse repayments.</td>
+    </tr>
+    <tr>
+      <td><span class="role-badge r-om">Operations Manager</span></td>
+      <td>Same as CEO except cannot access the audit trail. Can approve and disburse loans. Can manage users and view all branches.</td>
+    </tr>
+    <tr>
+      <td><span class="role-badge r-bm">Branch Manager</span></td>
+      <td>Manages their assigned branch. Can recommend and approve loans within the branch. Can view branch reports. Cannot disburse loans.</td>
+    </tr>
+    <tr>
+      <td><span class="role-badge r-lo">Loan Officer</span></td>
+      <td>Creates client profiles, submits loan applications, recommends loans. Records repayments. Can only see data from their branch.</td>
+    </tr>
+    <tr>
+      <td><span class="role-badge r-co">Collection Officer</span></td>
+      <td>Views overdue loans, logs collection activities (calls, visits, SMS), records repayments, sends SMS to overdue clients.</td>
+    </tr>
+    <tr>
+      <td><span class="role-badge r-ac">Accountant</span></td>
+      <td>Read-only access to all financial reports (profit, expenses, branch performance, PAR, daily collections). Cannot create or modify any data.</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ─── SECTION 4 ──────────────────────────────────────── -->
+<h2 id="dashboard">4. Dashboard Guide</h2>
+<p>The Dashboard is the first screen you see after logging in. It shows a real-time summary of the organisation's performance.</p>
+
+<h3>Key Performance Indicators (KPI Cards)</h3>
+<table>
+  <thead><tr><th>Card</th><th>What It Shows</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Total Portfolio</strong></td><td>Sum of outstanding loan balances across all active loans. Click to open the Loans list.</td></tr>
+    <tr><td><strong>Active Clients</strong></td><td>Number of registered clients with ACTIVE status. Click to open the Clients list.</td></tr>
+    <tr><td><strong>Active Loans</strong></td><td>Number of loans currently being repaid.</td></tr>
+    <tr><td><strong>Overdue Loans</strong></td><td>Number of loans where at least one repayment is late. Click to go to Collections.</td></tr>
+    <tr><td><strong>Total Arrears</strong></td><td>Total outstanding balance of all overdue loans.</td></tr>
+    <tr><td><strong>Today's Collections</strong></td><td>Total repayments recorded today, with the number of payments.</td></tr>
+    <tr><td><strong>Pending Loans</strong></td><td>Loan applications awaiting review or approval.</td></tr>
+    <tr><td><strong>PAR Ratio</strong></td><td>Portfolio at Risk — arrears ÷ total portfolio. Lower is better.</td></tr>
+  </tbody>
+</table>
+
+<h3>Daily Collections Chart</h3>
+<p>The area chart below the KPI cards shows repayments collected each day for the last 30 days. If no repayments have been recorded yet, the chart shows an empty state with a "Record First Payment" button.</p>
+
+<h3>Quick Actions</h3>
+<p>Six colored buttons give fast access to the most common tasks: New Client, New Loan, All Loans, All Clients, Record Payment, Overdue.</p>
+
+<!-- ─── SECTION 5 ──────────────────────────────────────── -->
+<h2 id="clients" class="page-break">5. Client Management</h2>
+
+<h3>Registering a New Client</h3>
+<div class="step-grid">
+  <div class="step-num">1</div><div class="step-text">Click <strong>Clients</strong> in the left sidebar, then click <strong>+ New Client</strong>.</div>
+  <div class="step-num">2</div><div class="step-text">Fill in the required fields: First Name, Last Name, Primary Phone. Select the Branch the client belongs to.</div>
+  <div class="step-num">3</div><div class="step-text">Fill in optional fields as available: National ID, Email, Date of Birth, Gender, Marital Status.</div>
+  <div class="step-num">4</div><div class="step-text">Click <strong>Save Client</strong>. The system generates a unique Client Number (e.g. CLT-00001) automatically.</div>
+</div>
+<div class="tip">✔ Always capture the National ID number if available — it prevents duplicate client registrations.</div>
+
+<h3>Client Detail Page</h3>
+<p>Click any client's name to open their full profile. The profile has six tabs:</p>
+<table>
+  <thead><tr><th>Tab</th><th>Contents</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Overview</strong></td><td>Personal details, profile photo, edit button, active loan summary</td></tr>
+    <tr><td><strong>Loans</strong></td><td>All loans for this client with status, expandable workflow history</td></tr>
+    <tr><td><strong>Documents</strong></td><td>Uploaded identity and business documents (National ID, Passport, etc.)</td></tr>
+    <tr><td><strong>Guarantors</strong></td><td>List of guarantors with contact details and relationship</td></tr>
+    <tr><td><strong>Business</strong></td><td>Business information: name, type, revenue, expenses, monthly profit</td></tr>
+    <tr><td><strong>Addresses</strong></td><td>Home, business, or other addresses with primary address flag</td></tr>
+  </tbody>
+</table>
+
+<h3>Uploading a Client Photo</h3>
+<div class="step-grid">
+  <div class="step-num">1</div><div class="step-text">Open the client profile.</div>
+  <div class="step-num">2</div><div class="step-text">Click the <strong>camera icon</strong> on the circular avatar.</div>
+  <div class="step-num">3</div><div class="step-text">Choose a JPG or PNG photo (max 2MB).</div>
+  <div class="step-num">4</div><div class="step-text">The photo uploads immediately and replaces the avatar initials.</div>
+</div>
+
+<h3>Uploading Documents</h3>
+<div class="step-grid">
+  <div class="step-num">1</div><div class="step-text">Open client profile → <strong>Documents</strong> tab → <strong>Upload Document</strong>.</div>
+  <div class="step-num">2</div><div class="step-text">Select document type: National ID, Passport, Utility Bill, Business Registration, or Other.</div>
+  <div class="step-num">3</div><div class="step-text">Choose the file from your computer → <strong>Upload</strong>.</div>
+</div>
+
+<h3>Adding a Guarantor</h3>
+<div class="step-grid">
+  <div class="step-num">1</div><div class="step-text">Open client profile → <strong>Guarantors</strong> tab → <strong>Add Guarantor</strong>.</div>
+  <div class="step-num">2</div><div class="step-text">Fill in: First Name, Last Name, Phone, National ID, Relationship (Spouse/Parent/Sibling/Friend/Colleague/Other), Occupation.</div>
+  <div class="step-num">3</div><div class="step-text">Click <strong>Save Guarantor</strong>.</div>
+</div>
+
+<!-- ─── SECTION 6 ──────────────────────────────────────── -->
+<h2 id="loans" class="page-break">6. Loan Management</h2>
+
+<h3>The Loan Workflow</h3>
+<div class="workflow">
+  <span class="wf-step">1. SUBMITTED</span>
+  <span class="wf-arrow">→</span>
+  <span class="wf-step">2. UNDER REVIEW</span>
+  <span class="wf-arrow">→</span>
+  <span class="wf-step">3. RECOMMENDED</span>
+  <span class="wf-arrow">→</span>
+  <span class="wf-step">4. APPROVED</span>
+  <span class="wf-arrow">→</span>
+  <span class="wf-step">5. DISBURSED / ACTIVE</span>
+</div>
+<p>At any stage, a loan can be <strong>Rejected</strong> with a mandatory reason. Each action is recorded with the name, role, and timestamp of the person who took it.</p>
+
+<h3>Submitting a Loan Application</h3>
+<div class="step-grid">
+  <div class="step-num">1</div><div class="step-text">Click <strong>Loans</strong> in the sidebar → <strong>+ New Loan</strong>.</div>
+  <div class="step-num">2</div><div class="step-text">Search for and select the <strong>Client</strong> using the search box.</div>
+  <div class="step-num">3</div><div class="step-text">Choose a <strong>Loan Product</strong> from the dropdown (e.g. "Standard Micro Loan").</div>
+  <div class="step-num">4</div><div class="step-text">Enter the <strong>Principal Amount</strong>, <strong>Loan Term</strong>, and <strong>Purpose</strong>.</div>
+  <div class="step-num">5</div><div class="step-text">Review the calculated interest, fees, and repayment schedule shown on screen.</div>
+  <div class="step-num">6</div><div class="step-text">Click <strong>Submit Application</strong>. Status becomes <strong>PENDING</strong>.</div>
+</div>
+
+<h3>Recommending a Loan</h3>
+<p>Loan Officers, Branch Managers, and Management can recommend loans. Open the loan → click <strong>Recommend</strong> → enter recommendation notes → confirm.</p>
+
+<h3>Approving a Loan</h3>
+<p>Branch Managers and Management can approve. Open the loan → click <strong>Approve</strong> → enter any notes → confirm.</p>
+<div class="note">⚠ Only Branch Manager and above can approve loans. A Loan Officer cannot approve their own submitted loan.</div>
+
+<h3>Disbursing a Loan</h3>
+<p>Only CEO and Operations Manager can disburse. Open an approved loan → click <strong>Disburse</strong> → select disbursement date → confirm. This action:</p>
+<ul>
+  <li>Sets the loan status to ACTIVE</li>
+  <li>Generates the full repayment schedule with all installment due dates</li>
+  <li>Records the disbursement date and the officer who disbursed it</li>
+</ul>
+
+<h3>Viewing the Repayment Schedule</h3>
+<p>Open any active loan → <strong>Schedule</strong> tab. Shows every installment: due date, principal due, interest due, penalty, total due, opening balance, closing balance, and current status (PENDING / PARTIAL / PAID / OVERDUE).</p>
+
+<h3>Rejecting a Loan</h3>
+<p>Open a loan at any pending stage → click <strong>Reject</strong> → type the reason for rejection (required) → confirm. The client and loan officer can see the rejection reason in the workflow history.</p>
+
+<h3>Writing Off a Loan</h3>
+<p>CEO and Operations Manager only. This is used for loans that are unrecoverable. Open the loan → click <strong>Write Off</strong> → enter the reason → confirm. The write-off amount is tracked separately for expense reporting.</p>
+
+<!-- ─── SECTION 7 ──────────────────────────────────────── -->
+<h2 id="repayments" class="page-break">7. Recording Repayments</h2>
+
+<h3>Recording a Payment</h3>
+<div class="step-grid">
+  <div class="step-num">1</div><div class="step-text">Click <strong>Repayments</strong> in the sidebar → <strong>+ Record Payment</strong>. (Or use the "Record Payment" quick action on the Dashboard.)</div>
+  <div class="step-num">2</div><div class="step-text">Search for the <strong>Loan</strong> (by loan number or client name).</div>
+  <div class="step-num">3</div><div class="step-text">Enter the <strong>Amount Received</strong> and <strong>Payment Date</strong>.</div>
+  <div class="step-num">4</div><div class="step-text">Select <strong>Collection Method</strong>: Cash, Mobile Money, Bank Transfer, or Cheque.</div>
+  <div class="step-num">5</div><div class="step-text">Enter a <strong>Reference Number</strong> if applicable (e.g. mobile money transaction ID).</div>
+  <div class="step-num">6</div><div class="step-text">Click <strong>Record Payment</strong>. The system allocates the payment to the earliest unpaid installments and updates the outstanding balance.</div>
+</div>
+<div class="tip">✔ A receipt number is generated automatically for every payment. You can print the receipt immediately after recording.</div>
+
+<h3>Printing a Receipt</h3>
+<div class="step-grid">
+  <div class="step-num">1</div><div class="step-text">After recording a payment, click <strong>View Receipt</strong>, or go to Repayments → click the receipt number.</div>
+  <div class="step-num">2</div><div class="step-text">The receipt shows: receipt number, client name, loan number, branch, payment date, collection method, reference number, principal paid, interest paid, penalty paid, total received, and allocation per installment.</div>
+  <div class="step-num">3</div><div class="step-text">Click the <strong>Print</strong> button (top right) to print or save as PDF.</div>
+</div>
+
+<h3>Reversing a Payment (CEO / OM Only)</h3>
+<p>If a payment was recorded in error: open the repayment → click <strong>Reverse</strong> → enter the reason for reversal (required) → confirm. The loan balance is restored. The reversal is permanently recorded in the audit trail.</p>
+
+<!-- ─── SECTION 8 ──────────────────────────────────────── -->
+<h2 id="collections" class="page-break">8. Collections &amp; Overdue Loans</h2>
+
+<h3>How Loans Become Overdue</h3>
+<p>Every night at <strong>00:01 (Tanzanian time)</strong>, the system automatically checks all repayment schedules. Any installment past its due date is marked OVERDUE. The parent loan is marked OVERDUE when any of its installments are overdue. No manual action is needed.</p>
+
+<h3>Viewing the Overdue List</h3>
+<p>Click <strong>Collections</strong> in the sidebar. The page shows all overdue loans with:</p>
+<ul>
+  <li><strong>Days Overdue badge</strong> (colour-coded: yellow &lt;7 days, orange 7-30 days, red 30-90 days, dark red &gt;90 days)</li>
+  <li>Arrears amount (how much is overdue)</li>
+  <li>Outstanding principal balance</li>
+  <li>Last contact date and outcome</li>
+</ul>
+
+<h3>Logging a Collection Activity</h3>
+<div class="step-grid">
+  <div class="step-num">1</div><div class="step-text">Find the overdue loan in the Collections list → click <strong>Log Activity</strong>.</div>
+  <div class="step-num">2</div><div class="step-text">Select <strong>Activity Type</strong>: Phone Call, Field Visit, SMS, Email, or Letter.</div>
+  <div class="step-num">3</div><div class="step-text">Select <strong>Outcome</strong>: Paid, Promised, Refused, Unreachable, or Other.</div>
+  <div class="step-num">4</div><div class="step-text">Write detailed <strong>Notes</strong> (required — what was discussed?).</div>
+  <div class="step-num">5</div><div class="step-text">If outcome is <strong>PROMISED</strong>: enter the Promise Date and Promise Amount that the client committed to.</div>
+  <div class="step-num">6</div><div class="step-text">Set a <strong>Next Follow-Up Date</strong> to schedule the next contact.</div>
+  <div class="step-num">7</div><div class="step-text">Click <strong>Save Activity</strong>.</div>
+</div>
+
+<h3>Recording Payment from Overdue List</h3>
+<p>Click <strong>Record Payment</strong> on any overdue loan card. This takes you directly to the repayment form with that loan pre-selected.</p>
+
+<!-- ─── SECTION 9 ──────────────────────────────────────── -->
+<h2 id="reports" class="page-break">9. Reports Guide</h2>
+<p>Click <strong>Reports</strong> in the sidebar. All reports use live data from the database — figures are always current.</p>
+
+<table>
+  <thead><tr><th>Report Name</th><th>Who Can See It</th><th>What It Shows</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Dashboard KPIs</strong></td><td>All roles</td><td>Portfolio, clients, active loans, arrears, today's collections, PAR ratio</td></tr>
+    <tr><td><strong>PAR Report</strong></td><td>All roles</td><td>Portfolio at Risk in 6 time buckets: 1, 7, 30, 60, 90, 180 days past due. Includes loan count, outstanding amount, and PAR % per bucket.</td></tr>
+    <tr><td><strong>Daily Collections</strong></td><td>All roles</td><td>Repayments by date: total amount, principal, interest, penalty, count. Filter by date range.</td></tr>
+    <tr><td><strong>Loan Officer Performance</strong></td><td>Branch Manager and above, plus Loan Officer (own data)</td><td>Per officer: loans submitted, approved, disbursed, active, overdue, total collected</td></tr>
+    <tr><td><strong>Branch Performance</strong></td><td>Management + Accountant</td><td>Per branch: clients, active loans, overdue loans, portfolio, total disbursed, total collected</td></tr>
+    <tr><td><strong>Profit Summary</strong></td><td>Management + Accountant</td><td>Interest income, penalty income, processing fees, insurance fees, total income</td></tr>
+    <tr><td><strong>Expense Summary</strong></td><td>Management + Accountant</td><td>Write-off totals, reversed repayment totals</td></tr>
+    <tr><td><strong>Recovery / Arrears Report</strong></td><td>All roles</td><td>Per branch: overdue loans count, arrears amount, promise-to-pay breakdown</td></tr>
+  </tbody>
+</table>
+
+<div class="tip">✔ All reports support date range filtering. Management reports can be filtered by branch. Use the Print button in your browser (Ctrl+P) to print or save any report as PDF.</div>
+
+<!-- ─── SECTION 10 ──────────────────────────────────────── -->
+<h2 id="sms" class="page-break">10. SMS Notifications</h2>
+
+<h3>Automatic SMS Reminders</h3>
+<p>The system sends SMS messages automatically every day at <strong>08:00 (Tanzania time)</strong>:</p>
+<ul>
+  <li><strong>Payment due reminders</strong>: sent to clients with payments due in 1, 3, or 7 days</li>
+  <li><strong>Overdue reminders</strong>: sent at 08:30 to clients with payments 1, 3, 7, 14, or 30 days overdue</li>
+</ul>
+<div class="note">⚠ Automatic SMS only works after the Africa's Talking API key is configured in the system settings. Contact your administrator if SMS is not being sent.</div>
+
+<h3>Sending a Manual SMS to One Client</h3>
+<div class="step-grid">
+  <div class="step-num">1</div><div class="step-text">Click <strong>SMS</strong> in the sidebar.</div>
+  <div class="step-num">2</div><div class="step-text">Select the client using the search box.</div>
+  <div class="step-num">3</div><div class="step-text">Type your message or select a template.</div>
+  <div class="step-num">4</div><div class="step-text">Click <strong>Send SMS</strong>.</div>
+</div>
+
+<h3>Sending Bulk SMS</h3>
+<div class="step-grid">
+  <div class="step-num">1</div><div class="step-text">Click <strong>SMS</strong> → <strong>Bulk Send</strong>.</div>
+  <div class="step-num">2</div><div class="step-text">Select a message template from the dropdown.</div>
+  <div class="step-num">3</div><div class="step-text">Click <strong>Send to All Active Clients</strong> (or filtered group).</div>
+  <div class="step-num">4</div><div class="step-text">Confirm the bulk send. Each SMS is logged individually.</div>
+</div>
+<p>Bulk SMS permission is available to Branch Manager level and above.</p>
+
+<h3>Viewing SMS Delivery Logs</h3>
+<p>Click <strong>SMS</strong> → <strong>SMS Logs</strong> tab. Shows every SMS sent: recipient phone, message preview, status (Sent / Delivered / Failed), date/time, and provider response. Failed messages show the error reason.</p>
+
+<h3>Managing SMS Templates</h3>
+<p>CEO and Operations Manager can create and edit SMS templates. Go to SMS → <strong>Templates</strong> tab → <strong>+ New Template</strong>. Templates support placeholders: <code>{{client_name}}</code>, <code>{{loan_no}}</code>, <code>{{amount_due}}</code>, <code>{{due_date}}</code>, <code>{{days_overdue}}</code>.</p>
+
+<!-- ─── SECTION 11 ──────────────────────────────────────── -->
+<h2 id="users" class="page-break">11. User &amp; Branch Management</h2>
+
+<h3>Creating a New User Account</h3>
+<p>Only CEO, Operations Manager, and Branch Manager can create user accounts.</p>
+<div class="step-grid">
+  <div class="step-num">1</div><div class="step-text">Click <strong>Users</strong> in the sidebar → <strong>+ New User</strong>.</div>
+  <div class="step-num">2</div><div class="step-text">Fill in: First Name, Last Name, Email (unique), Phone, Role, Branch.</div>
+  <div class="step-num">3</div><div class="step-text">Set a temporary password. The user should change it on first login.</div>
+  <div class="step-num">4</div><div class="step-text">Click <strong>Create User</strong>.</div>
+</div>
+<div class="note">⚠ Email addresses must be unique. You cannot create two accounts with the same email.</div>
+
+<h3>Activating / Deactivating a User</h3>
+<p>Open a user's profile → click <strong>Deactivate</strong> or <strong>Activate</strong>. Deactivated users cannot log in. Their historical data (loans, repayments, activities they recorded) remains in the system.</p>
+
+<h3>Creating a Branch</h3>
+<div class="step-grid">
+  <div class="step-num">1</div><div class="step-text">Click <strong>Branches</strong> in the sidebar → <strong>+ New Branch</strong>.</div>
+  <div class="step-num">2</div><div class="step-text">Enter: Branch Code (unique, e.g. DAR-001), Branch Name, Address, Phone, Email, Region, District.</div>
+  <div class="step-num">3</div><div class="step-text">Assign a Branch Manager using the Manager dropdown.</div>
+  <div class="step-num">4</div><div class="step-text">Click <strong>Create Branch</strong>.</div>
+</div>
+
+<!-- ─── SECTION 12 ──────────────────────────────────────── -->
+<h2 id="audit">12. Audit Trail</h2>
+<p>The audit trail records every action taken in the system: who did what, when, from which IP address, on which record, and what changed. <strong>Only the CEO/Admin can view the audit trail.</strong></p>
+<p>Go to <strong>Audit</strong> in the sidebar. You can filter by:</p>
+<ul>
+  <li><strong>Action</strong>: search for keywords like "APPROVE", "DISBURSE", "LOGIN", "CREATE"</li>
+  <li><strong>Module</strong>: Loans, Clients, Users, Repayments, Collections, SMS, Auth, Branches</li>
+  <li><strong>Date range</strong>: from date and to date</li>
+</ul>
+<p>The table shows: Date/Time, User name and role, Module (colour-coded), Action (colour-coded), Description of what changed, IP Address of the request.</p>
+<div class="tip">✔ Use the audit trail to investigate suspicious activity, verify who approved a specific loan, or trace any data change. All records are immutable — they cannot be deleted.</div>
+
+<!-- ─── SECTION 13 ──────────────────────────────────────── -->
+<h2 id="settings">13. Settings &amp; Password</h2>
+<p>Click <strong>Settings</strong> in the sidebar or your name in the top bar.</p>
+<table>
+  <thead><tr><th>Tab</th><th>Contents</th></tr></thead>
+  <tbody>
+    <tr><td><strong>My Profile</strong></td><td>Your user number, email, role, branch, phone, status. (To change your name or email, contact your administrator.)</td></tr>
+    <tr><td><strong>Password</strong></td><td>Change your password. Enter your current password, then the new one twice. New password must have: 8+ characters, uppercase letter, number, special character.</td></tr>
+    <tr><td><strong>System Info</strong></td><td>System version, environment, API URL, your session info, and your permissions list showing what you can and cannot do.</td></tr>
+  </tbody>
+</table>
+
+<!-- ─── SECTION 14 ──────────────────────────────────────── -->
+<h2 id="faq" class="page-break">14. Common Questions &amp; Troubleshooting</h2>
+
+<h3>Q: I can't log in — it says "Account locked"</h3>
+<p>Your account is temporarily locked due to too many failed login attempts. Wait 30 minutes and try again. Or ask your administrator to unlock your account from the Users page.</p>
+
+<h3>Q: I submitted a loan but I can't see the Approve button</h3>
+<p>Your role may not have approval permission. Only Branch Manager and above can approve loans. Ask your Branch Manager or a manager to approve the loan.</p>
+
+<h3>Q: The dashboard shows 0 for everything</h3>
+<p>This can happen when the system has no data yet, or if you are a Branch-level user with no data in your branch. Check that you are assigned to the correct branch in your user profile. Ask your administrator to verify your branch assignment.</p>
+
+<h3>Q: SMS messages are not being sent</h3>
+<p>The Africa's Talking API key may not be configured yet. Contact your administrator. Check the SMS Logs page for error messages — the logs show exactly why each message failed.</p>
+
+<h3>Q: I recorded a repayment with the wrong amount — what do I do?</h3>
+<p>Do not record another repayment to "correct" it — this will create double entries. Contact your CEO or Operations Manager to reverse the incorrect repayment. After reversal, the correct payment can be recorded.</p>
+
+<h3>Q: A client's loan shows as OVERDUE but they paid</h3>
+<p>The payment may not have been recorded in the system yet. Check the Repayments list. If the payment is there, check the repayment date — if the payment date was after the due date, the loan may still show overdue until the nightly cron updates it (runs at midnight).</p>
+
+<h3>Q: How do I find a client if I know their phone number but not their name?</h3>
+<p>Go to Clients → use the search box. You can search by name, phone number, or National ID.</p>
+
+<h3>Q: Can I delete a client or a loan?</h3>
+<p>No. Microfinance regulations require that all records be preserved. You can <strong>deactivate</strong> a client (status = INACTIVE or BLACKLISTED) or <strong>write off</strong> a loan, but records are never deleted from the system.</p>
+
+<h3>Q: The screen is blank after logging in</h3>
+<p>Try refreshing your browser (Ctrl + R or Cmd + R). If the problem persists, clear your browser cache or try a different browser (Chrome is recommended). If it still fails, contact your system administrator — the backend server may be down.</p>
+
+<h3>Q: How do I print a loan schedule?</h3>
+<p>Open the loan → Schedule tab. Use your browser's Print function (Ctrl+P or Cmd+P). Choose "Save as PDF" if you want a digital copy.</p>
+
+</div>
+
+<footer>BUPEK Finance Limited · User Manual v1.0 · June 2026 · Confidential — For internal use only</footer>
+</body>
+</html>
