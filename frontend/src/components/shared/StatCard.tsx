@@ -12,6 +12,7 @@ interface StatCardProps {
   trend?: { value: number; label: string };
   className?: string;
   onClick?: () => void;
+  loading?: boolean;
 }
 
 export default function StatCard({ title, value, subtitle, icon: Icon, iconColor = 'text-blue-600', iconBg = 'bg-blue-50', trend, className, onClick }: StatCardProps) {
