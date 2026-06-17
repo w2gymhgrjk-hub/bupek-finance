@@ -25,7 +25,7 @@ export const auditLog = (options: AuditOptions) =>
           entityType: options.getEntityId ? options.module.toLowerCase() : undefined,
           entityId: options.getEntityId ? options.getEntityId(req) : req.params?.id,
           description: `${options.action} by ${req.user?.email || 'unknown'} from ${req.ip}`,
-          newValues: req.method !== 'GET' ? (req.body as Record<string, unknown>) : undefined,
+          newValues: req.method !== 'GET' ? (req.body as any) : undefined,
           ipAddress: req.ip || req.socket.remoteAddress,
           userAgent: req.get('user-agent'),
           status: isSuccess ? 'SUCCESS' : 'FAILURE',
