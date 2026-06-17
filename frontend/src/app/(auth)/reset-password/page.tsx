@@ -1,4 +1,5 @@
 'use client';
+import { Suspense } from 'react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSearchParams, useRouter } from 'next/navigation';
@@ -11,7 +12,7 @@ type FormData = {
   confirmPassword: string;
 };
 
-export default function ResetPasswordPage() {
+function ResetPasswordForm() {
   const params = useSearchParams();
   const router = useRouter();
   const token = params.get('token') || '';
@@ -63,7 +64,7 @@ export default function ResetPasswordPage() {
             <div className="text-center">
               <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-4" />
               <h2 className="text-xl font-semibold mb-2">Password Reset!</h2>
-              <p className="text-gray-500 text-sm mb-6">Your password has been changed successfully. You can now log in with your new password.</p>
+              <p className="text-gray-500 text-sm mb-6">Your password has been changed successfully.</p>
               <button onClick={() => router.push('/login')} className="btn-primary w-full justify-center">Go to Login</button>
             </div>
           ) : (
@@ -71,7 +72,6 @@ export default function ResetPasswordPage() {
               <h2 className="text-xl font-semibold mb-2">Set new password</h2>
               <p className="text-sm text-gray-500 mb-6">Choose a strong password for your account.</p>
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-
                 <div className="form-group">
                   <label className="form-label">New Password *</label>
                   <div className="relative">
@@ -96,7 +96,6 @@ export default function ResetPasswordPage() {
                     </button>
                   </div>
                   {errors.newPassword && <p className="text-xs text-red-600 mt-1">{errors.newPassword.message}</p>}
-                  <p className="text-xs text-gray-400 mt-1">Min 8 chars · Uppercase · Number · Special character</p>
                 </div>
 
                 <div className="form-group">
@@ -129,5 +128,17 @@ export default function ResetPasswordPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 flex items-center justify-center">
+        <Loader2 className="w-8 h-8 text-white animate-spin" />
+      </div>
+    }>
+      <ResetPasswordForm />
+    </Suspense>
   );
 }
